@@ -3,7 +3,6 @@ const cors = require('cors');
 const axios = require('axios');
 const app = express();
 const PORT = 5001
-// connfiguration for the api to use api to use.
 
 app.use(cors());
 
@@ -12,23 +11,19 @@ app.use(express.json())
 require('dotenv').config()
 
 
-let data
-// Function to get forecast details from the openweatherapi.
+/* endpoint to get the weather forecast for a particular city using rapid api open weather api */
 
+app.get('/', (req,res) => {
 
-
-
-
-
-
-app.get('/', (req,res) =>{
+// receiving data from the front end. Remember accessing this endpoint with a get request and sending a query parameter with it LINE 31 app.jsx file
+  const choosenCity = req.query.userCity
+    
 
 
   const getForecast = async ()=> {
 
   
-    const choosenCity = req.query.userCity
-    
+
      // connfiguration for the api to use api to use.
      const apiConfig = {
        method: 'GET',
@@ -54,17 +49,15 @@ app.get('/', (req,res) =>{
   
        try {
            const response = await axios.request (apiConfig)
-           data = response.data
+           const data = response.data
            console.log(data);
-       } catch (error) {
+           res.send(data)
+       }
+       
+       catch (error) {
            console.log(error.message);
        }
    }
-
-  res.send(data)
-
-
-
 
   getForecast()
 
@@ -73,7 +66,6 @@ app.get('/', (req,res) =>{
   
 
 )
-
 
 
 app.listen(PORT, ( ) => {
