@@ -17,9 +17,9 @@ const [ city, setCity] = useState("")
   The state below called data is used to store data from the mini backend endpoint and setData property to update the data variable
  */
 
-const [data, setData] = useState("")
+const [weatherData, setweatherData] = useState("")
 
-
+let data
 
 const getForecast = async () => {
 
@@ -35,7 +35,15 @@ const getForecast = async () => {
 
     try {
       const res =  await axios.request(config)
-      setData(res.data)
+      setweatherData(res.data)
+      //checking the type of data in the weatherData variable
+      console.log(typeof(weatherData));
+
+      // trying to convert weatherData to JSON
+      data = JSON.parse(weatherData)
+
+      //checking the type of data in the data variable to check if it has been coverted to json
+      console.log(typeof(data))
     }
     
     catch (error) {
@@ -51,7 +59,7 @@ const getForecast = async () => {
 
       <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast}>Get Forecast</button>
     </div>
-    {data}
+    {weatherData}
    
     </>
    );

@@ -50,8 +50,8 @@ app.get('/', (req,res) => {
        try {
            const response = await axios.request (apiConfig)
            const data = response.data
-           console.log(data);
-           res.send(data)
+           //console.log(data);
+           res.json(data)
        }
        
        catch (error) {
