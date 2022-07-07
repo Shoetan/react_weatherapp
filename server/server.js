@@ -11,6 +11,8 @@ app.use(express.json())
 require('dotenv').config()
 
 
+
+
 /* endpoint to get the weather forecast for a particular city using rapid api open weather api */
 
 app.get('/', (req,res) => {
@@ -20,7 +22,7 @@ app.get('/', (req,res) => {
     
 
 
-  const getForecast = async ()=> {
+  const getForecast = async () => {
 
   
 
@@ -33,11 +35,10 @@ app.get('/', (req,res) => {
          q: choosenCity,
          lat: '0',
          lon: '0',
-         callback: 'test',
          id: '2172797',
          lang: 'null',
-         units: 'imperial',
-         mode: 'xml'    
+         units: 'metric',
+            
        },
        headers: {
          'X-RapidAPI-Key': process.env.API_KEY,
@@ -50,7 +51,7 @@ app.get('/', (req,res) => {
        try {
            const response = await axios.request (apiConfig)
            const data = response.data
-           //console.log(data);
+           console.log(typeof(data));
            res.json(data)
        }
        

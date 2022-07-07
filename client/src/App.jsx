@@ -4,22 +4,27 @@ import { useState } from 'react'
 
 
 
-
-
 const App = () => {
 
 /* 
   The state below is used to keep track of the current user city and also the setCity property to update the city variable
  */
+
 const [ city, setCity] = useState("")
 
 /*
-  The state below called data is used to store data from the mini backend endpoint and setData property to update the data variable
+  The states below are used to store data from the mini backend endpoint and set property to update the variable
  */
 
-const [weatherData, setweatherData] = useState("")
+const [ weatherDescription, setweatherDescription] = useState("")
 
-let data
+const [weatherIcon,  setweatherIcon] = useState("")
+
+const [weatherTemp, setweatherTemp] = useState("")
+
+
+let weatherData
+
 
 const getForecast = async () => {
 
@@ -35,15 +40,18 @@ const getForecast = async () => {
 
     try {
       const res =  await axios.request(config)
-      setweatherData(res.data)
-      //checking the type of data in the weatherData variable
-      console.log(typeof(weatherData));
+      weatherData = res.data
+      
+      /* 
 
-      // trying to convert weatherData to JSON
-      data = JSON.parse(weatherData)
+      * assign weather data to variables by destructring data from the api response
+      
+      */
+      console.log(weatherIcon);
+      setweatherDescription(weatherData.weather[0].description);
+      setweatherTemp(weatherData.main.temp)
+      setweatherIcon(weatherData.weather[0].icon)
 
-      //checking the type of data in the data variable to check if it has been coverted to json
-      console.log(typeof(data))
     }
     
     catch (error) {
@@ -54,12 +62,37 @@ const getForecast = async () => {
 
   return ( 
     <>
-    <div className='flex gap-4 w-1/2 m-auto justify-around mt-4'>
-      <input className = 'w-4/6 bg-transparent border-b-2 border-teal-50 focus:outline-none' placeholdertype="text" onChange={(e) => { setCity(e.target.value); } } />
 
-      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast}>Get Forecast</button>
+    
+    <div className='flex gap-4 w-1/2 m-auto justify-around mt-4  '>
+
+      <input className='w-4/6 bg-transparent border-b-2 border-teal-50 focus:outline-none font-poppins'
+      placeholdertype="text" 
+      onChange={(e) => { setCity(e.target.value); } } />
+
+      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast}>Search</button>
     </div>
-    {weatherData}
+
+    {/* weathercard to display details of weather from selected city */}
+    <div className="flex flex-col w-3/6 mx-auto  bg-slate-50 mt-6 rounded-md justify-center items-center font-poppins">
+
+      {/* current weather temperature */}
+      <div className='mt-6'>
+          <h2>{weatherTemp} <sup>&deg;</sup>C  </h2>
+      </div>
+
+      {/* current weather icon */}
+      <div>
+      <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt="weather Icon"/>
+      </div>
+
+      {/* current weather description */}
+      <div className="mt-4">
+        {weatherDescription}
+      </div>
+    </div>
+    
+   
    
     </>
    );
