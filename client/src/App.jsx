@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { useState } from 'react'
 
-
+import WeatherCard from './components/WeatherCard'
 
 const App = () => {
 
@@ -47,7 +47,7 @@ const getForecast = async () => {
       * assign weather data to variables by destructring data from the api response
       
       */
-      console.log(weatherIcon);
+     
       setweatherDescription(weatherData.weather[0].description);
       setweatherTemp(weatherData.main.temp)
       setweatherIcon(weatherData.weather[0].icon)
@@ -70,30 +70,16 @@ const getForecast = async () => {
       placeholdertype="text" 
       onChange={(e) => { setCity(e.target.value); } } />
 
-      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast}>Search</button>
+      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast} id={'1'}>Search</button>
     </div>
 
-    {/* weathercard to display details of weather from selected city */}
-    <div className="flex flex-col w-3/6 mx-auto  bg-slate-50 mt-6 rounded-md justify-center items-center font-poppins">
-
-      {/* current weather temperature */}
-      <div className='mt-6'>
-          <h2>{weatherTemp} <sup>&deg;</sup>C  </h2>
-      </div>
-
-      {/* current weather icon */}
-      <div>
-      <img src={`http://openweathermap.org/img/wn/${weatherIcon}@2x.png`} alt="weather Icon"/>
-      </div>
-
-      {/* current weather description */}
-      <div className="mt-4">
-        {weatherDescription}
-      </div>
-    </div>
-    
-   
-   
+{/* Stand alone weather card component */}
+    <WeatherCard
+      weatherIcon={weatherIcon}
+      weatherDescription = {weatherDescription}
+      weatherTemp = {weatherTemp}
+    />
+ 
     </>
    );
 }
