@@ -2,24 +2,36 @@ import axios from 'axios'
 
 import { useState } from 'react'
 
-
-
-
+import WeatherCard from './components/WeatherCard'
 
 const App = () => {
 
 /* 
   The state below is used to keep track of the current user city and also the setCity property to update the city variable
  */
+
 const [ city, setCity] = useState("")
 
 /*
-  The state below called data is used to store data from the mini backend endpoint and setData property to update the data variable
+  The states below are used to store data from the mini backend endpoint and set property to update the variable
  */
 
-const [weatherData, setweatherData] = useState("")
+const [ weatherDescription, setweatherDescription] = useState("")
 
-let data
+const [weatherIcon,  setweatherIcon] = useState("")
+
+const [weatherTemp, setweatherTemp] = useState("")
+
+
+const [ isButtonClicked, setIsButtonClicked] = useState('')
+
+let weatherData
+
+const buttonClicked = () => {
+
+    setIsButtonClicked(true)
+    console.log(isButtonClicked);
+}
 
 const getForecast = async () => {
 
@@ -35,15 +47,18 @@ const getForecast = async () => {
 
     try {
       const res =  await axios.request(config)
-      setweatherData(res.data)
-      //checking the type of data in the weatherData variable
-      console.log(typeof(weatherData));
+      weatherData = res.data
+      
+      /* 
 
-      // trying to convert weatherData to JSON
-      data = JSON.parse(weatherData)
+      * assign weather data to variables by destructring data from the api response
+      
+      */
+     
+      setweatherDescription(weatherData.weather[0].description);
+      setweatherTemp(weatherData.main.temp)
+      setweatherIcon(weatherData.weather[0].icon)
 
-      //checking the type of data in the data variable to check if it has been coverted to json
-      console.log(typeof(data))
     }
     
     catch (error) {
@@ -54,13 +69,32 @@ const getForecast = async () => {
 
   return ( 
     <>
-    <div className='flex gap-4 w-1/2 m-auto justify-around mt-4'>
-      <input className = 'w-4/6 bg-transparent border-b-2 border-teal-50 focus:outline-none' placeholdertype="text" onChange={(e) => { setCity(e.target.value); } } />
 
-      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast}>Get Forecast</button>
+    
+    <div className='flex gap-4 w-1/2 m-auto justify-around mt-4  '>
+
+      <input className='w-4/6 bg-transparent border-b-2 border-teal-50 focus:outline-none font-poppins'
+      placeholdertype="text" 
+      onChange={(e) => { setCity(e.target.value); } } />
+
+      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={() => {
+
+        getForecast();
+        buttonClicked();
+
+      }}>Search</button>
     </div>
-    {weatherData}
-   
+
+{/* conditional rendering if the state is true display the weather card component if false do nothing  */}
+
+ { isButtonClicked ? 
+      <WeatherCard
+            weatherIcon = {weatherIcon}
+            weatherDescription = {weatherDescription}
+            weatherTemp = {weatherTemp}
+          /> : null }
+
+ 
     </>
    );
 }
