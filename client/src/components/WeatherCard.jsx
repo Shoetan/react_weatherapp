@@ -1,5 +1,5 @@
 /* 
-  Weather card component to display weather details
+  Weather card component to display weather details as received from the mini backend endpoint
  */
 
 const WeatherCard = ({weatherTemp, weatherIcon, weatherDescription}) => {
