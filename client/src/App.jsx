@@ -23,8 +23,15 @@ const [weatherIcon,  setweatherIcon] = useState("")
 const [weatherTemp, setweatherTemp] = useState("")
 
 
+const [ isButtonClicked, setIsButtonClicked] = useState('')
+
 let weatherData
 
+const buttonClicked = () => {
+
+    setIsButtonClicked(true)
+    console.log(isButtonClicked);
+}
 
 const getForecast = async () => {
 
@@ -70,15 +77,23 @@ const getForecast = async () => {
       placeholdertype="text" 
       onChange={(e) => { setCity(e.target.value); } } />
 
-      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={getForecast} id={'1'}>Search</button>
+      <button className='font-poppins bg-teal-50 p-4 rounded-lg hover:bg-teal-100' onClick={() => {
+
+        getForecast();
+        buttonClicked();
+
+      }}>Search</button>
     </div>
 
-{/* Stand alone weather card component */}
-    <WeatherCard
-      weatherIcon={weatherIcon}
-      weatherDescription = {weatherDescription}
-      weatherTemp = {weatherTemp}
-    />
+{/* conditional rendering if the state is true display the weather card component if false do nothing  */}
+
+ { isButtonClicked ? 
+      <WeatherCard
+            weatherIcon = {weatherIcon}
+            weatherDescription = {weatherDescription}
+            weatherTemp = {weatherTemp}
+          /> : null }
+
  
     </>
    );

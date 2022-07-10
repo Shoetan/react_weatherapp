@@ -24,7 +24,6 @@ app.get('/', (req,res) => {
 
   const getForecast = async () => {
 
-  
 
      // connfiguration for the api to use api to use.
      const apiConfig = {
@@ -32,6 +31,7 @@ app.get('/', (req,res) => {
        url: 'https://community-open-weather-map.p.rapidapi.com/weather', 
        
        params : {
+
          q: choosenCity,
          lat: '0',
          lon: '0',
@@ -51,7 +51,6 @@ app.get('/', (req,res) => {
        try {
            const response = await axios.request (apiConfig)
            const data = response.data
-           console.log(typeof(data));
            res.json(data)
        }
        
@@ -69,6 +68,6 @@ app.get('/', (req,res) => {
 )
 
 
-app.listen(PORT, ( ) => {
+app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`)
 });
