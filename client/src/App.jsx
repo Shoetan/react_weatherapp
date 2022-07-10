@@ -30,7 +30,6 @@ let weatherData
 const buttonClicked = () => {
 
     setIsButtonClicked(true)
-    console.log(isButtonClicked);
 }
 
 const getForecast = async () => {
@@ -85,7 +84,7 @@ const getForecast = async () => {
       }}>Search</button>
     </div>
 
-{/* conditional rendering if the state is true display the weather card component if false do nothing  */}
+{/* conditional rendering if the state is true the weather card will be displayed but if the state is false the card will no be displayed  */}
 
  { isButtonClicked ? 
       <WeatherCard
@@ -93,9 +92,8 @@ const getForecast = async () => {
             weatherDescription = {weatherDescription}
             weatherTemp = {weatherTemp}
           /> : null }
-
- 
     </>
+    
    );
 }
  
